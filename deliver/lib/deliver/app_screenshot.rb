@@ -31,6 +31,8 @@ module Deliver
       IOS_IPAD_11 = "iOS-iPad-11"
       # iPad Pro
       IOS_IPAD_PRO = "iOS-iPad-Pro"
+      # iPad Pro 12.9 3rd Generation
+      IOS_IPAD_PRO_12_9 = "iOS-iPad-Pro-12.9"
 
       # iPhone 5 iMessage
       IOS_40_MESSAGES = "iOS-4-in-messages"
@@ -103,6 +105,7 @@ module Deliver
         ScreenSize::IOS_IPAD_10_5 => "ipad105",
         ScreenSize::IOS_IPAD_11 => "ipadPro11",
         ScreenSize::IOS_IPAD_PRO => "ipadPro",
+        ScreenSize::IOS_IPAD_PRO_12_9 => "ipadPro129",
         ScreenSize::IOS_40_MESSAGES => "iphone4",
         ScreenSize::IOS_47_MESSAGES => "iphone6", # also 7 & 8
         ScreenSize::IOS_55_MESSAGES => "iphone6Plus", # also 7 Plus & 8 Plus
@@ -123,7 +126,7 @@ module Deliver
     # Nice name
     def formatted_name
       # This list does not include iPad Pro 12.9-inch (3rd generation)
-      # because it has same resoluation as IOS_IPAD_PRO and will clobber
+      # because it has same resolution as IOS_IPAD_PRO and will clobber
       matching = {
         ScreenSize::IOS_35 => "iPhone 4",
         ScreenSize::IOS_40 => "iPhone 5",
@@ -136,6 +139,7 @@ module Deliver
         ScreenSize::IOS_IPAD_10_5 => "iPad 10.5",
         ScreenSize::IOS_IPAD_11 => "iPad 11",
         ScreenSize::IOS_IPAD_PRO => "iPad Pro",
+        ScreenSize::IOS_IPAD_PRO_12_9 => "iPad Pro 12.9",
         ScreenSize::IOS_40_MESSAGES => "iPhone 5 (iMessage)",
         ScreenSize::IOS_47_MESSAGES => "iPhone 6 (iMessage)", # also 7 & 8
         ScreenSize::IOS_55_MESSAGES => "iPhone 6 Plus (iMessage)", # also 7 Plus & 8 Plus
@@ -274,6 +278,10 @@ module Deliver
           [2732, 2048],
           [2048, 2732]
         ],
+        ScreenSize::IOS_IPAD_PRO_12_9 => [
+          [2732, 2048],
+          [2048, 2732]
+        ],
         ScreenSize::MAC => [
           [1280, 800],
           [1440, 900],
@@ -316,6 +324,9 @@ module Deliver
           else
             if (size[0] == (resolution[0]) && size[1] == (resolution[1])) || # portrait
                (size[1] == (resolution[0]) && size[0] == (resolution[1])) # landscape
+              if device_type == ScreenSize::IOS_IPAD_PRO && path.include?("3rd")
+                device_type=ScreenSize::IOS_IPAD_PRO_12_9
+              end
               return device_type
             end
           end
